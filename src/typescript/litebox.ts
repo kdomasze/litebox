@@ -69,12 +69,44 @@ const addLiteboxEventListeners = () => {
                 exitLitebox(litebox);
             });
         }
+
+        fadeIn(litebox);
     }
 };
 
 const exitLitebox = (litebox: HTMLElement) => {
     const parent = litebox.parentNode;
     if (parent !== null) {
-        parent.removeChild(litebox);
+        fadeOut(litebox, () => parent.removeChild(litebox));
     }
 };
+
+const fadeIn = (element: HTMLElement) => {
+    element.style.opacity = '0';
+    element.style.display = 'block';
+
+    (function fade() {
+        let value = parseFloat(element.style.opacity);
+        value += 0.1;
+        if(!(value > 1)) {
+            element.style.opacity = value.toString();
+            requestAnimationFrame(fade);
+        }
+    })();
+}
+
+const fadeOut = (element: HTMLElement, callback: () => any) => {
+    element.style.opacity = '1';
+
+    (function fade() {
+        let value = parseFloat(element.style.opacity);
+        value -= 0.1;
+        if(value < 0) {
+            element.style.display = 'none';
+            callback();
+        } else {
+            element.style.opacity = value.toString();
+            requestAnimationFrame(fade);
+        }
+    })();
+}
