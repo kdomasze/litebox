@@ -1,0 +1,20 @@
+{
+    "name": "lightbox-clone-tmp",
+    "version": "1.0.0",
+    "description": "A clone of the basic functionalities of Lightbox",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "tsc && sass src/sass/main.scss public/css/main.css",
+        "watch": "tsc --watch && sass --watch src/sass/main.scss public/css/main.css"
+    },
+    "author": "Kyle Domaszewicz",
+    "license": "MIT",
+    "devDependencies": {
+        "prettier": "^1.14.3",
+        "sass": "^1.14.1",
+        "tslint": "^5.11.0",
+        "typescript": "^3.1.1"
+    },
+    "dependencies": {}
+}
