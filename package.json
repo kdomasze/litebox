@@ -5,8 +5,8 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "tsc && sass src/sass/main.scss public/css/main.css",
-        "watch": "tsc --watch && sass --watch src/sass/main.scss public/css/main.css"
+        "build": "tsc && sass src/sass/litebox.scss public/css/litebox.css",
+        "watch": "tsc --watch && sass --watch src/sass/litebox.scss public/css/litebox.css"
     },
     "author": "Kyle Domaszewicz",
     "license": "MIT",
