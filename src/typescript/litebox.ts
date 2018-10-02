@@ -17,6 +17,15 @@ class Litebox {
             imageSrc = anchor.getAttribute('href') as string;
         }
 
+        // get description
+        let description: string = '';
+        if (
+            anchor.getAttribute('data-litebox-description') !== null &&
+            (anchor.getAttribute('data-litebox-description') as string) !== ''
+        ) {
+            description = anchor.getAttribute('data-litebox-description') as string;
+        }
+
         // get alt text
         const imgChild = anchor.querySelector('img');
         let imageAlt: string = '';
@@ -32,6 +41,7 @@ class Litebox {
 
         output = liteboxTemplate.innerHTML
             .replace(/{{image_src}}/g, imageSrc)
+            .replace(/{{description}}/g, description)
             .replace(/{{image_alt}}/g, imageAlt);
 
         // append litebox to body
