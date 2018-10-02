@@ -1,3 +1,6 @@
+// TODO: add static method to litebox for invoking from anchor.
+// The current invoke should take in src, alt, and description as parameters
+
 class Litebox {
     private litebox: HTMLElement | null = null;
     private options = {
@@ -7,6 +10,10 @@ class Litebox {
         fadeOutTime: 300
     };
 
+    /**
+     * invokes an instance of litebox from the attributes on an anchor tag
+     * @param anchor the anchor invoking the litebox
+     */
     invoke = (anchor: Element) => {
         // get path to full image
         let imageSrc: string = '';
@@ -49,7 +56,7 @@ class Litebox {
             const exit = this.litebox.querySelector('#js-litebox-exit');
             if (exit === null) return;
             exit.addEventListener('click', () => {
-                this.exit(this.litebox as HTMLElement);
+                this.exit();
             });
         } else {
             const exit = this.litebox.querySelector('#js-litebox-exit');
@@ -70,24 +77,39 @@ class Litebox {
         fadeIn(this.litebox, this.options.fadeInTime);
     }
 
-    exit = (litebox: HTMLElement) => {
-        if(litebox === null) return;
+    /**
+     * closes and removes the litebox
+     */
+    exit = () => {
+        if(this.litebox === null) return;
 
-        const parent = litebox.parentNode;
+        const parent = this.litebox.parentNode;
         if (parent === null) return;
 
-        fadeOut(litebox, this.options.fadeOutTime, () => {
-            parent.removeChild(litebox);
+        fadeOut(this.litebox, this.options.fadeOutTime, () => {
+            parent.removeChild(this.litebox as HTMLElement);
+            this.litebox = null;
         });
-        this.litebox = null;
     }
 
+    /**
+     * event that closes the litebox when escape is pressed
+     * @param event the keyboard event
+     */
     private escapeEvent = (event: KeyboardEvent) => {
         if (event.key === 'Escape') {
-            this.exit(this.litebox as HTMLElement);
+            this.exit();
         }
     }
 
+    /**
+     * Builds the structure of the litebox
+     * @param imageSrc the url to the image to display in the litebox
+     * @param imageAlt the alt text for the image
+     * @param description the optional description to display in the litebox
+     *
+     * @returns the complete litebox
+     */
     private build = (imageSrc: string, imageAlt: string, description: string): HTMLElement => {
         let liteboxDiv = document.createElement('div');
         liteboxDiv.setAttribute('class', 'litebox');
