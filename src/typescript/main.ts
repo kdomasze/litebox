@@ -52,7 +52,7 @@ const buildLitebox = (imageSrc: string, imageAlt: string) => {
 };
 
 const addLiteboxEventListeners = () => {
-    const litebox = document.getElementById('litebox');
+    const litebox = document.getElementById('js-litebox');
 
     // close litebox with escape
     if (litebox !== null) {
@@ -63,7 +63,7 @@ const addLiteboxEventListeners = () => {
         });
 
         // close litebox with x
-        const exit = litebox.querySelector('#litebox-exit');
+        const exit = litebox.querySelector('#js-litebox-exit');
         if (exit !== null) {
             exit.addEventListener('click', (event) => {
                 exitLitebox(litebox);
