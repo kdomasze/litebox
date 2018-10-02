@@ -1,11 +1,30 @@
+interface Options {
+    enableEscClose?: boolean;
+    enableExitButton?: boolean;
+    fadeInTime?: number;
+    fadeOutTime?: number;
+    [key: string]: any;
+}
+
 class Litebox {
     private litebox: HTMLElement | null = null;
-    private options = {
+    private defaultOptions: Options = {
         enableEscClose: true,
         enableExitButton: true,
         fadeInTime: 300,
         fadeOutTime: 300
     };
+
+    constructor(options?: Options) {
+        if(options === undefined) return;
+
+        for(let key in this.defaultOptions) {
+            if(!this.defaultOptions.hasOwnProperty(key)) continue;
+            if(options[key] === undefined) continue;
+
+            this.defaultOptions[key] = options[key];
+        }
+    }
 
     /**
      * invokes an instance of litebox from the attributes on an anchor tag
@@ -59,7 +78,7 @@ class Litebox {
         if (this.litebox === null) return;
 
         // close litebox with x
-        if(this.options.enableExitButton) {
+        if(this.defaultOptions.enableExitButton) {
             const exit = this.litebox.querySelector('#js-litebox-exit');
             if (exit === null) return;
             exit.addEventListener('click', () => {
@@ -77,11 +96,11 @@ class Litebox {
         }
 
         // close litebox with escape
-        if(this.options.enableEscClose) {
+        if(this.defaultOptions.enableEscClose) {
             document.addEventListener('keyup', this.escapeEvent);
         }
 
-        this.fadeIn(this.litebox, this.options.fadeInTime);
+        this.fadeIn(this.litebox, this.defaultOptions.fadeInTime as number);
     }
 
     /**
@@ -93,7 +112,7 @@ class Litebox {
         const parent = this.litebox.parentNode;
         if (parent === null) return;
 
-        this.fadeOut(this.litebox, this.options.fadeOutTime, () => {
+        this.fadeOut(this.litebox, this.defaultOptions.fadeOutTime as number, () => {
             parent.removeChild(this.litebox as HTMLElement);
             this.litebox = null;
         });
