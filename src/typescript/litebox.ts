@@ -34,20 +34,12 @@ class Litebox {
         }
 
         // build litebox
-        const liteboxTemplate = document.querySelector('#template-litebox');
-
-        let output: string = '';
-        if (liteboxTemplate === null) return;
-
-        output = liteboxTemplate.innerHTML
-            .replace(/{{image_src}}/g, imageSrc)
-            .replace(/{{description}}/g, description)
-            .replace(/{{image_alt}}/g, imageAlt);
+        let output: HTMLElement = this.build(imageSrc, imageAlt, description);
 
         // append litebox to body
         const body = document.querySelector('body');
         if (body === null) return;
-        body.insertAdjacentHTML('beforeend', output);
+        body.appendChild(output);
 
         this.litebox = document.getElementById('js-litebox');
         if (this.litebox === null) return;
@@ -94,6 +86,36 @@ class Litebox {
         if (event.key === 'Escape') {
             this.exit(this.litebox as HTMLElement);
         }
+    }
+
+    private build = (imageSrc: string, imageAlt: string, description: string): HTMLElement => {
+        let liteboxDiv = document.createElement('div');
+        liteboxDiv.setAttribute('class', 'litebox');
+        liteboxDiv.setAttribute('id', 'js-litebox');
+
+        let contentDiv = document.createElement('div');
+        contentDiv.setAttribute('class', 'litebox-content');
+        liteboxDiv.appendChild(contentDiv);
+
+        let img = document.createElement('img');
+        img.setAttribute('src', imageSrc);
+        img.setAttribute('alt', imageAlt);
+        contentDiv.appendChild(img);
+
+        let descriptionParagraph = document.createElement('p');
+        descriptionParagraph.innerHTML = description;
+        contentDiv.appendChild(descriptionParagraph);
+
+        let exitDiv = document.createElement('div');
+        exitDiv.setAttribute('class', 'litebox-exit');
+        liteboxDiv.appendChild(exitDiv);
+
+        let exitSpan = document.createElement('span');
+        exitSpan.setAttribute('id', 'js-litebox-exit');
+        exitSpan.innerText = '×';
+        exitDiv.appendChild(exitSpan);
+
+        return liteboxDiv as HTMLElement;
     }
 }
 
