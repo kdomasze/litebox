@@ -1,5 +1,7 @@
 .litebox {
-    display: none;
+    display: flex;
+    justify-content: center;
+    
     position: fixed;
     top: 0;
     left: 0;
@@ -11,33 +13,34 @@
 
     background-color: rgba(0, 0, 0, 0.6);
 
-    .litebox-content {
-        background-color: white;
-
-        margin: auto;
-        padding: 8px;
+    .litebox-body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column;
 
         max-width: 80%;
+        max-height: 80%;
 
-        img {
-            max-width: 100%;
+        .litebox-content {
+            display: inline-block;
+            background-color: white;
+
+            padding: 8px;
         }
-    }
 
-    .litebox-exit {
-        font-size: 64px;
-        text-align: right;
+        .litebox-exit {
+            font-size: 64px;
 
-        margin: auto;
-        padding: 8px;
-        margin-top: -18px;
+            margin-left: auto;
+            padding: 8px;
+            margin-top: -18px;
 
-        width: 80%;
+            color: rgba(255, 255, 255, 0.6);
 
-        color: rgba(255, 255, 255, 0.6);
-
-        span {
-            cursor: pointer;
+            span {
+                cursor: pointer;
+            }
         }
     }
 }

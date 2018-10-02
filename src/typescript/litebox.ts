@@ -77,6 +77,12 @@ class Litebox {
         this.litebox = document.getElementById('js-litebox');
         if (this.litebox === null) return;
 
+        // set max width and height of image based on window size
+        let img = this.litebox.querySelector('img');
+        if(img === null) return;        
+        img.style.maxWidth = (window.innerWidth * .8).toString() + 'px';
+        img.style.maxHeight = (window.innerHeight * .8).toString() + 'px';
+
         // close litebox with x
         if(this.defaultOptions.enableExitButton) {
             const exit = this.litebox.querySelector('#js-litebox-exit');
@@ -100,7 +106,7 @@ class Litebox {
             document.addEventListener('keyup', this.escapeEvent);
         }
 
-        this.fadeIn(this.litebox, this.defaultOptions.fadeInTime as number);
+        this.fadeIn(this.litebox, this.defaultOptions.fadeInTime as number, 'flex');
     }
 
     /**
@@ -140,10 +146,15 @@ class Litebox {
         let liteboxDiv = document.createElement('div');
         liteboxDiv.setAttribute('class', 'litebox');
         liteboxDiv.setAttribute('id', 'js-litebox');
+        
+
+        let bodyDiv = document.createElement('div');
+        bodyDiv.setAttribute('class', 'litebox-body');
+        liteboxDiv.appendChild(bodyDiv);
 
         let contentDiv = document.createElement('div');
         contentDiv.setAttribute('class', 'litebox-content');
-        liteboxDiv.appendChild(contentDiv);
+        bodyDiv.appendChild(contentDiv);
 
         let img = document.createElement('img');
         img.setAttribute('src', imageSrc);
@@ -156,7 +167,7 @@ class Litebox {
 
         let exitDiv = document.createElement('div');
         exitDiv.setAttribute('class', 'litebox-exit');
-        liteboxDiv.appendChild(exitDiv);
+        bodyDiv.appendChild(exitDiv);
 
         let exitSpan = document.createElement('span');
         exitSpan.setAttribute('id', 'js-litebox-exit');
@@ -166,9 +177,9 @@ class Litebox {
         return liteboxDiv as HTMLElement;
     }
 
-    private fadeIn = (element: HTMLElement, duration: number) => {
+    private fadeIn = (element: HTMLElement, duration: number, display: string) => {
         element.style.opacity = '0';
-        element.style.display = 'block';
+        element.style.display = display;
 
         let end = +new Date() + duration;
 
