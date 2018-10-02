@@ -1,5 +1,8 @@
+// TODO: create object to house options for litebox
+// probably move all functions into a class
+
 document.addEventListener('DOMContentLoaded', () => {
-    const anchors: NodeListOf<Element> = document.querySelectorAll('a[data-lightbox]');
+    const anchors: NodeListOf<Element> = document.querySelectorAll('a[data-litebox]');
 
     anchors.forEach((anchor) => {
         anchor.addEventListener('click', (event) => {
@@ -22,56 +25,56 @@ document.addEventListener('DOMContentLoaded', () => {
                 imageAlt = imgChild.getAttribute('alt') as string;
             }
 
-            // build lightbox
-            buildLightbox(imageSrc, imageAlt);
+            // build litebox
+            buildLitebox(imageSrc, imageAlt);
             return;
         });
     });
 });
 
-const buildLightbox = (imageSrc: string, imageAlt: string) => {
-    const lightboxTemplate = document.querySelector('#template-lightbox');
+const buildLitebox = (imageSrc: string, imageAlt: string) => {
+    const liteboxTemplate = document.querySelector('#template-litebox');
 
     let output: string = '';
-    if (lightboxTemplate !== null) {
-        output = lightboxTemplate.innerHTML
+    if (liteboxTemplate !== null) {
+        output = liteboxTemplate.innerHTML
             .replace(/{{image_src}}/g, imageSrc)
             .replace(/{{image_alt}}/g, imageAlt);
     }
 
-    // append lightbox to body
+    // append litebox to body
     const body = document.querySelector('body');
     if (body !== null) {
         body.insertAdjacentHTML('beforeend', output);
     }
 
-    addLightboxEventListeners();
+    addLiteboxEventListeners();
 };
 
-const addLightboxEventListeners = () => {
-    const lightbox = document.getElementById('lightbox');
+const addLiteboxEventListeners = () => {
+    const litebox = document.getElementById('litebox');
 
-    // close lightbox with escape
-    if (lightbox !== null) {
+    // close litebox with escape
+    if (litebox !== null) {
         document.addEventListener('keyup', (event) => {
             if (event.key === 'Escape') {
-                exitLightbox(lightbox);
+                exitLitebox(litebox);
             }
         });
 
-        // close lightbox with x
-        const exit = lightbox.querySelector('#lightbox-exit');
+        // close litebox with x
+        const exit = litebox.querySelector('#litebox-exit');
         if (exit !== null) {
             exit.addEventListener('click', (event) => {
-                exitLightbox(lightbox);
+                exitLitebox(litebox);
             });
         }
     }
 };
 
-const exitLightbox = (lightbox: HTMLElement) => {
-    const parent = lightbox.parentNode;
+const exitLitebox = (litebox: HTMLElement) => {
+    const parent = litebox.parentNode;
     if (parent !== null) {
-        parent.removeChild(lightbox);
+        parent.removeChild(litebox);
     }
 };
