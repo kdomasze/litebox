@@ -1,6 +1,3 @@
-// TODO: add static method to litebox for invoking from anchor.
-// The current invoke should take in src, alt, and description as parameters
-
 class Litebox {
     private litebox: HTMLElement | null = null;
     private options = {
@@ -14,7 +11,7 @@ class Litebox {
      * invokes an instance of litebox from the attributes on an anchor tag
      * @param anchor the anchor invoking the litebox
      */
-    invoke = (anchor: Element) => {
+    invokeFromAnchor = (anchor: Element) => {
         // get path to full image
         let imageSrc: string = '';
         if (
@@ -40,6 +37,16 @@ class Litebox {
             imageAlt = imgChild.getAttribute('alt') as string;
         }
 
+        this.invoke(imageSrc, imageAlt, description);
+    }
+
+    /**
+     * invokes an instance of litebox from the given parameter
+     * @param imageSrc the url to the image to display in the litebox
+     * @param imageAlt the alt text for the image
+     * @param description the optional description to display in the litebox
+     */
+    invoke = (imageSrc: string, imageAlt: string, description: string) => {
         // build litebox
         let output: HTMLElement = this.build(imageSrc, imageAlt, description);
 
@@ -74,7 +81,7 @@ class Litebox {
             document.addEventListener('keyup', this.escapeEvent);
         }
 
-        fadeIn(this.litebox, this.options.fadeInTime);
+        this.fadeIn(this.litebox, this.options.fadeInTime);
     }
 
     /**
@@ -86,7 +93,7 @@ class Litebox {
         const parent = this.litebox.parentNode;
         if (parent === null) return;
 
-        fadeOut(this.litebox, this.options.fadeOutTime, () => {
+        this.fadeOut(this.litebox, this.options.fadeOutTime, () => {
             parent.removeChild(this.litebox as HTMLElement);
             this.litebox = null;
         });
@@ -139,6 +146,51 @@ class Litebox {
 
         return liteboxDiv as HTMLElement;
     }
+
+    private fadeIn = (element: HTMLElement, duration: number) => {
+        element.style.opacity = '0';
+        element.style.display = 'block';
+
+        let end = +new Date() + duration;
+
+        (function fade() {
+            let current = +new Date();
+            let remaining = end - current;
+
+            if(remaining < 60) {
+                element.style.opacity = '1';
+                return;
+            } else {
+                let rate = 1 - remaining / duration;
+                element.style.opacity = rate.toString();
+            }
+
+            requestAnimationFrame(fade);
+        })();
+    }
+
+    private fadeOut = (element: HTMLElement, duration: number, callback: () => any) => {
+        element.style.opacity = '1';
+
+        let end = +new Date() + duration;
+
+        (function fade() {
+            let current = +new Date();
+            let remaining = end - current;
+
+            if(remaining < 60) {
+                element.style.opacity = '0';
+                element.style.display = 'none';
+                callback();
+                return;
+            } else {
+                let rate = 1 - remaining / duration;
+                element.style.opacity = (1 - rate).toString();
+            }
+
+            requestAnimationFrame(fade);
+        })();
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -150,53 +202,8 @@ document.addEventListener('DOMContentLoaded', () => {
         anchor.addEventListener('click', (event) => {
             // prevents the anchor from redirecting
             event.preventDefault();
-            litebox.invoke(anchor);
+            litebox.invokeFromAnchor(anchor);
             return;
         });
     });
 });
-
-const fadeIn = (element: HTMLElement, duration: number) => {
-    element.style.opacity = '0';
-    element.style.display = 'block';
-
-    let end = +new Date() + duration;
-
-    (function fade() {
-        let current = +new Date();
-        let remaining = end - current;
-
-        if(remaining < 60) {
-            element.style.opacity = '1';
-            return;
-        } else {
-            let rate = 1 - remaining / duration;
-            element.style.opacity = rate.toString();
-        }
-
-        requestAnimationFrame(fade);
-    })();
-}
-
-const fadeOut = (element: HTMLElement, duration: number, callback: () => any) => {
-    element.style.opacity = '1';
-
-    let end = +new Date() + duration;
-
-    (function fade() {
-        let current = +new Date();
-        let remaining = end - current;
-
-        if(remaining < 60) {
-            element.style.opacity = '0';
-            element.style.display = 'none';
-            callback();
-            return;
-        } else {
-            let rate = 1 - remaining / duration;
-            element.style.opacity = (1 - rate).toString();
-        }
-
-        requestAnimationFrame(fade);
-    })();
-}
