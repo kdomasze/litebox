@@ -80,8 +80,8 @@ class Litebox {
         // set max width and height of image based on window size
         let img = this.litebox.querySelector('img');
         if(img === null) return;        
-        img.style.maxWidth = (window.innerWidth * .8).toString() + 'px';
-        img.style.maxHeight = (window.innerHeight * .8).toString() + 'px';
+        img.style.maxWidth = (window.innerWidth * .7).toString() + 'px';
+        img.style.maxHeight = (window.innerHeight * .7).toString() + 'px';
 
         // close litebox with x
         if(this.defaultOptions.enableExitButton) {
